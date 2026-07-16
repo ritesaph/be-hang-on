@@ -10,11 +10,8 @@ from app.db.session import get_db
 bearer_scheme = HTTPBearer()
 
 
-async def get_current_user(
-    credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),
-    db: AsyncSession = Depends(get_db),
-) -> User:
-    decoded = verify_id_token(credentials.credentials)
+async def resolve_user(token: str, db: AsyncSession) -> User:
+    decoded = verify_id_token(token)
     firebase_uid = decoded["uid"]
 
     result = await db.execute(select(User).where(User.firebase_uid == firebase_uid))
@@ -27,3 +24,10 @@ async def get_current_user(
         await db.refresh(user)
 
     return user
+
+
+async def get_current_user(
+    credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),
+    db: AsyncSession = Depends(get_db),
+) -> User:
+    return await resolve_user(credentials.credentials, db)
