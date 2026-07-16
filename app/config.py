@@ -7,6 +7,8 @@ class Settings(BaseSettings):
     database_url: str
     firebase_credentials_json: str | None = None
     codeword_encryption_key: str
+    gemini_api_key: str
+    suspicion_confidence_threshold: float = 0.7
 
 
 settings = Settings()

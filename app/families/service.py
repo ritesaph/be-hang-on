@@ -69,3 +69,11 @@ async def is_member(db: AsyncSession, family_id: uuid.UUID, user_id: uuid.UUID) 
 async def get_family_members(db: AsyncSession, family_id: uuid.UUID) -> list[FamilyMember]:
     result = await db.execute(select(FamilyMember).where(FamilyMember.family_id == family_id))
     return list(result.scalars().all())
+
+
+async def get_decrypted_secret(db: AsyncSession, family_id: uuid.UUID) -> str | None:
+    result = await db.execute(select(FamilySecret).where(FamilySecret.family_id == family_id))
+    secret_row = result.scalar_one_or_none()
+    if secret_row is None:
+        return None
+    return decrypt_secret(secret_row.encrypted_secret)
