@@ -6,6 +6,7 @@ class Settings(BaseSettings):
 
     database_url: str
     firebase_credentials_json: str | None = None
+    codeword_encryption_key: str
 
 
 settings = Settings()

@@ -6,3 +6,7 @@ pydantic-settings==2.14.2
 greenlet==3.5.3
 alembic==1.18.5
 firebase-admin==7.5.0
+pyotp==2.10.0
+cryptography==49.0.0
+pytest==9.1.1
+pytest-asyncio==1.4.0

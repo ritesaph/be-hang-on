@@ -10,6 +10,7 @@ class Family(SQLModel, table=True):
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     name: str
+    invite_code: str = Field(unique=True, index=True)
     created_by_user_id: uuid.UUID = Field(foreign_key="users.id")
     created_at: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc),
