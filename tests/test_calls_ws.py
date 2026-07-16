@@ -27,7 +27,7 @@ def _run_isolated(coro_factory):
             settings.database_url,
             connect_args={"ssl": "require", "statement_cache_size": 0},
         )
-        session_factory = async_sessionmaker(engine)
+        session_factory = async_sessionmaker(engine, expire_on_commit=False)
         async with session_factory() as db:
             result = await coro_factory(db)
         await engine.dispose()
