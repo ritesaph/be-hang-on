@@ -1,7 +1,10 @@
 
 SUSPICIOUS_KEYWORDS = [
     "OTP",
+    "kode OTP",
     "kode verifikasi",
+    "kode akses",
+    "PIN",
     "transfer",
     "rekening",
     "kartu kredit",
@@ -18,8 +21,6 @@ SUSPICIOUS_KEYWORDS = [
     "paket tertahan",
     "kecelakaan keluarga",
     "tebusan",
-    "PIN",
-    "kode OTP",
 ]
 
 SYSTEM_INSTRUCTION_TEMPLATE = """Kamu adalah asisten yang membantu mendeteksi indikasi penipuan \
