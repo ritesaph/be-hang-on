@@ -32,6 +32,7 @@ class CallSession:
     last_is_suspicious: bool | None = None
     last_confidence: float | None = None
     last_reason: str | None = None
+    last_flagged_keywords: list[str] = field(default_factory=list)
     claimed_family_id: uuid.UUID | None = None
     codeword_retries_left: int = CODEWORD_MAX_RETRIES
     verification_status: VerificationStatus = VerificationStatus.TIDAK_TERSEDIA

@@ -63,6 +63,7 @@ async def _run_analysis(session: CallSession, pcm_window: bytes) -> SuspicionAna
     session.last_is_suspicious = result.is_suspicious
     session.last_confidence = result.confidence
     session.last_reason = result.reason
+    session.last_flagged_keywords = result.flagged_keywords
     return result
 
 
@@ -77,6 +78,7 @@ async def _analyze_window_and_maybe_flag(sender: _Sender, session: CallSession, 
             "is_suspicious": result.is_suspicious,
             "confidence": result.confidence,
             "reason": result.reason,
+            "flagged_keywords": result.flagged_keywords,
         }
     )
 
