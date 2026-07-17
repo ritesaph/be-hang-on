@@ -1,13 +1,12 @@
 from contextlib import asynccontextmanager
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI
 
 from app.calls.router import router as calls_router
-from app.db.models import User
-from app.deps import get_current_user
 from app.families.router import router as families_router
 from app.logging_config import configure_logging
+from app.users.router import router as users_router
 from app.workers.retention_cleanup import purge_expired_call_logs
 
 scheduler = AsyncIOScheduler()
@@ -23,6 +22,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="HangOn Backend", lifespan=lifespan)
+app.include_router(users_router)
 app.include_router(families_router)
 app.include_router(calls_router)
 
@@ -30,12 +30,3 @@ app.include_router(calls_router)
 @app.get("/health")
 def health():
     return {"status": "ok"}
-
-
-@app.get("/me")
-async def me(user: User = Depends(get_current_user)):
-    return {
-        "id": str(user.id),
-        "firebase_uid": user.firebase_uid,
-        "display_name": user.display_name,
-    }
