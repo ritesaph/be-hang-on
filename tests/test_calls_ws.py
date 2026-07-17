@@ -3,7 +3,6 @@ import json
 import uuid
 
 import pytest
-from fastapi.testclient import TestClient
 from sqlalchemy import delete
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlmodel import select
@@ -11,7 +10,6 @@ from sqlmodel import select
 from app.config import settings
 from app.db.models import CallLog, Family, FamilyMember, FamilySecret, User
 from app.gemini.schemas import SuspicionAnalysis
-from app.main import app
 
 NOT_SUSPICIOUS = SuspicionAnalysis(
     is_suspicious=False, confidence=0.1, reason="tidak ada indikasi", updated_context="ctx"
@@ -84,12 +82,6 @@ def cleanup_data(fake_firebase_uid):
         await db.commit()
 
     _run_isolated(_cleanup)
-
-
-@pytest.fixture(scope="module")
-def client():
-    with TestClient(app) as c:
-        yield c
 
 
 def test_call_session_happy_path(client):
