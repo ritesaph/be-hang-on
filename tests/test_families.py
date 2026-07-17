@@ -27,8 +27,6 @@ def _run_isolated(coro_factory):
 
 @pytest.fixture(autouse=True)
 def mock_verify_id_token(monkeypatch):
-    # The bearer token itself is used as the firebase_uid, so a single test can act as
-    # multiple distinct users just by sending different tokens.
     def _fake_verify(token: str) -> dict:
         return {"uid": token, "name": token}
 
@@ -130,7 +128,6 @@ def test_member_can_leave_and_secret_rotates(client, owner_uid, member_uid):
     resp = client.get(f"/families/{family['id']}/secret", headers=_auth(owner_uid))
     assert resp.json()["shared_secret"] != family["shared_secret"]
 
-    # leaving again is a no-op 404, not a crash
     resp = client.delete(f"/families/{family['id']}/leave", headers=_auth(member_uid))
     assert resp.status_code == 404
 
