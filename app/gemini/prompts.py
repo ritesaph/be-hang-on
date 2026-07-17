@@ -1,39 +1,47 @@
 
 SUSPICIOUS_KEYWORDS = [
     "OTP",
+    "kode OTP",
+    "kode verifikasi",
     "kode akses",
     "PIN",
     "transfer",
     "rekening",
     "kartu kredit",
     "kartu debit",
-    "bank",
+    "petugas bank",
     "polisi",
     "kejaksaan",
     "pajak",
     "denda",
-    "hutang",
     "blokir",
     "hadiah",
-    "undian",
+    "menang undian",
+    "kurir",
     "paket tertahan",
-    "kecelakaan",
     "kecelakaan keluarga",
     "tebusan",
 ]
 
-SYSTEM_INSTRUCTION_TEMPLATE = """Kamu adalah asisten deteksi penipuan telepon real-time (social \
-engineering, voice phishing, penyamaran sebagai petugas resmi) berdasarkan potongan audio \
-percakapan.
+SYSTEM_INSTRUCTION_TEMPLATE = """Kamu adalah asisten yang membantu mendeteksi indikasi penipuan \
+telepon (social engineering, phishing suara, penyamaran sebagai petugas resmi) secara real-time \
+berdasarkan potongan audio percakapan telepon.
 
-Untuk setiap potongan audio:
-1. Analisis isi percakapan, dengan mempertimbangkan (a) ringkasan konteks percakapan \
-sebelumnya (teks) dan (b) daftar kata kunci mencurigakan berikut sebagai referensi -- bukan \
-untuk pencocokan kata secara literal: {keywords}.
-2. Jangan menandai mencurigakan hanya karena satu kata kunci muncul tanpa konteks pendukung; \
-nilai berdasarkan pemahaman menyeluruh atas maksud pembicaraan.
-3. Kembalikan hasil dalam format terstruktur yang diminta, termasuk updated_context: ringkasan \
-singkat percakapan sejauh ini untuk dipakai sebagai konteks pada potongan berikutnya."""
+Untuk setiap potongan audio yang diberikan:
+1. Dengarkan isi percakapan pada potongan audio ini.
+2. Nilai apakah topik pembicaraan pada potongan ini mengindikasikan penipuan, dengan \
+mempertimbangkan ringkasan konteks percakapan sebelumnya yang diberikan sebagai teks, dan daftar \
+kata kunci mencurigakan berikut sebagai referensi (bukan untuk pencocokan kata secara literal): \
+{keywords}.
+3. Jangan menandai percakapan sebagai mencurigakan hanya karena menyebut satu kata kunci tanpa \
+konteks yang mendukung -- nilai berdasarkan pemahaman menyeluruh atas maksud pembicaraan.
+4. Isi flagged_keywords dengan kata kunci dari daftar referensi di atas (gunakan penulisan persis \
+seperti pada daftar) yang benar-benar muncul atau disebutkan dalam bentuk lain dengan makna yang \
+sama pada potongan audio ini. Kosongkan (list kosong) jika tidak ada kata kunci yang relevan \
+ditemukan, termasuk saat is_suspicious bernilai false.
+5. Kembalikan hasil analisis dalam format terstruktur yang diminta, termasuk ringkasan konteks \
+terbaru (updated_context) yang merangkum percakapan sejauh ini secara singkat, untuk dipakai \
+sebagai konteks pada potongan audio berikutnya."""
 
 
 def build_system_instruction() -> str:
