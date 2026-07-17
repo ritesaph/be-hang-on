@@ -164,7 +164,5 @@ async def remove_member(db: AsyncSession, family_id: uuid.UUID, user_id: uuid.UU
         return False
 
     await db.delete(member)
-    # A removed/leaving member still knows the current codeword secret, so rotating
-    # it revokes their ability to pass codeword verification going forward.
     await rotate_secret(db, family_id)
     return True
